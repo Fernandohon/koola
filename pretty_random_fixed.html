@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>랜덤 추첨 게임 (민수 고정)</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      text-align: center;
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+      margin: 0;
+      padding: 50px 20px;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px #333;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #ff6b81;
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      font-size: 20px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: #ff4757;
+      transform: scale(1.05);
+    }
+
+    #result {
+      margin-top: 30px;
+      font-size: 30px;
+      font-weight: bold;
+      color: #ffeaa7;
+      animation: fadeIn 2s ease forwards;
+      opacity: 0;
+    }
+
+    .loading {
+      font-size: 28px;
+      color: #f1f2f6;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .participant-list {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #f1f2f6;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>랜덤 추첨 게임 🎲</h1>
+    <p style="font-size: 18px; margin-bottom: 10px;">쉼표(,)로 이름을 구분해 주세요. (예: 철수,영희,민수)</p>
+    <input type="text" id="nameInput" placeholder="참가자 이름 입력" />
+    <div class="participant-list" id="currentList"></div>
+    <button onclick="updateNames()">참가자 등록</button>
+    <button onclick="drawWinner()">추첨하기</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    let participantNames = ["수정", "민규", "택준", "황균", "예슬", "용원", "은주". "지윤", "성호", "다찬"];
+    const fixedWinner = "용원"; // 무조건 이 사람이 당첨
+
+    function updateNames() {
+      const input = document.getElementById("nameInput").value;
+      participantNames = input.split(",").map(name => name.trim()).filter(name => name);
+      document.getElementById("currentList").innerHTML = "참가자: " + participantNames.join(", ");
+    }
+
+    function drawWinner() {
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = '<div class="loading">추첨 중...</div>';
+      resultDiv.style.opacity = 1;
+
+      setTimeout(() => {
+        if (!participantNames.includes(fixedWinner)) {
+          resultDiv.innerHTML = `⚠️ "${fixedWinner}"은(는) 참가자 명단에 없습니다.`;
+        } else {
+          resultDiv.style.animation = 'fadeIn 2s ease forwards';
+          resultDiv.innerHTML = `🎉 <span style="color: #ffeaa7">${fixedWinner}</span> 당첨! 🎉`;
+        }
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
